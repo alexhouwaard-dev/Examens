@@ -10,30 +10,504 @@
 </head>
 <body>
 
-<!-- PROGRESS BAR -->
 <div id="progress-bar"></div>
 
 <!-- HEADER -->
 <header>
-  <div class="logo">the <span>Archive</span></div>
+  <div class="logo" id="logo">Alex's <span>Examens</span></div>
   <div class="header-rule"></div>
-  <div class="header-meta"></div>
+  <div class="header-meta">Est. 2026</div>
 </header>
 
-<!-- LAYOUT -->
 <div class="layout">
 
   <!-- SIDEBAR -->
   <aside id="sidebar">
-    <div class="sidebar-label">Contents</div>
-    <ul class="tree" id="toc"></ul>
+    <!-- Page switcher tabs -->
+    <div class="page-tabs">
+      <button class="page-tab" data-page="ccna">CCNA</button>
+      <button class="page-tab" data-page="python">Python</button>
+      <button class="page-tab" data-page="security">Security</button>
+    </div>
+
+    <div class="sidebar-label">Inhoud</div>
+
+    <!-- One TOC panel per page -->
+    <div class="toc-panel" data-toc="ccna"></div>
+    <div class="toc-panel" data-toc="python" style="display:none"></div>
+    <div class="toc-panel" data-toc="security" style="display:none"></div>
   </aside>
 
-  <!-- MAIN -->
-  <main id="content">
-    <div class="content" id="post-content">
+  <!-- MAIN CONTENT -->
+  <main>
 
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE: HOME
+    ════════════════════════════════════════════════════════ -->
+    <div id="page-home" class="page-content active">
+      <div class="home-container">
+        <div class="home-hero">
+          <h1 class="home-title">Alex's <span>Examens</span></h1>
+          <p class="home-subtitle">Een verzameling van technische documentatie en leermateriaal</p>
+          <div class="home-divider"></div>
+        </div>
+        <div class="home-content">
+          <section class="home-section">
+            <h2>Welkom</h2>
+            <p>Als je je Exmamens goed wil uitvoeren moet je vooral het examen goed lezen en het examen stap voor stap volgen en sla geen dingen over. Kijk Vooral goed in de bijlagen</p>
+          </section>
+
+          <section class="home-section">
+            <h2>Beschikbare onderwerpen</h2>
+            <div class="topic-grid">
+              <div class="topic-card">
+                <div class="topic-icon">🌐</div>
+                <h3>CCNA</h3>
+                <p>Cisco Certified Network Associate — Netwerkconfiguratie, routing, switching en geavanceerde netwerkprotocollen.</p>
+                <button class="topic-button" data-page="ccna">Verkennen</button>
+              </div>
+              <div class="topic-card">
+                <div class="topic-icon">🐍</div>
+                <h3>Python</h3>
+                <p>Python-programmering fundamentals, bibliotheken en praktische toepassingen voor ontwikkelaars.</p>
+                <button class="topic-button" data-page="python">Binnenkort beschikbaar</button>
+              </div>
+              <div class="topic-card">
+                <div class="topic-icon">🔒</div>
+                <h3>Security</h3>
+                <p>Cybersecurity-concepten, protocollen en best practices voor het beveiligen van netwerken en systemen.</p>
+                <button class="topic-button" data-page="security">Binnenkort beschikbaar</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="home-section">
+            <h2>Over dit archief</h2>
+            <p>Dit documentatiearchief is een uitgebreide bron voor technisch leren en voorbereiding op certificeringen. Elk onderdeel is zorgvuldig georganiseerd met duidelijke procedures, configuraties en verificatiestappen om praktische kennis van complexe onderwerpen te garanderen.</p>
+          </section>
+        </div>
+      </div>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE: CCNA
+    ════════════════════════════════════════════════════════ -->
+    <div id="page-ccna" class="page-content">
+      <div class="post-eyebrow">Netwerk Engineering · Cisco</div>
+      <h1 class="post-title">CCNA — Solar Plex Arnhem</h1>
+      <div class="post-meta">
+        <span>2025</span>
+        <span class="dot">◆</span>
+        <span class="post-tag">Cisco IOS</span>
+        <span class="post-tag">VLAN</span>
+        <span class="post-tag">OSPF</span>
+        <span class="post-tag">ACL</span>
+      </div>
+      <div class="post-accent"></div>
+
+      <div class="content">
+        <h2 id="ccna-topology">Topologie</h2>
+        <img src="static/CCNA-Screenshot.png" alt="Topologie van het netwerk in Cisco Packet Tracer" class="content-image" style="width: 100%">
+        <!-- ── CONTEXT ── -->
+        <h2 id="ccna-context">Projectcontext</h2>
+
+
+
+        <p>Solar Plex is een duurzame energiebedrijf met vestigingen in Nijmegen (hoofdkantoor), Doetinchem en Arnhem. De netwerken in Nijmegen en Doetinchem zijn bestaande omgevingen. In Arnhem is een nieuwe werkplaats ingericht en het netwerk was nog niet afgerond. De opdracht is om dit netwerk volledig te configureren en op te zetten in Cisco Packet Tracer.</p>
+
+        <p>Het Arnhemse netwerk bedient twee VLANs voor productie- en marketingafdelingen, plus een apart gast-WiFi VLAN met ACL-beveiliging zodat gasten niet bij het intranet kunnen.</p>
+
+        <!-- ── OPDRACHT 1 ── -->
+        <h2 id="ccna-opdracht1">Opdracht 1 — Hardware vervangen</h2>
+        
+        <h3 id="ccna-o1-vervangen">Vervang de NIC's volgende apparaten</h3>
+        <table>
+          <thead><tr><th>Apparaat</th><th>Model</th><th>Uitbreidingskaart</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td>Laptop_gast</td><td>Generiek</td><td>WPC300N</td><td>Wireless 2.4 GHZ</td></tr>
+            <tr><td>Laptop 2</td><td>Generiek</td><td>WPC300N</td><td>Wireless 2.4 GHZ</td></tr>
+            <tr><td>Printer0</td><td>Generiek</td><td>WMP300N</td><td>Wireless 2.4 GHZ</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="ccna-o1-procedure">Procedure per apparaat</h3>
+        <p>Voer de volgende stappen uit voor <strong>Laptop_gast</strong>, <strong>Laptop2</strong> en <strong>Printer0</strong>:</p>
+        <p>1. Klik op het apparaat om de eigenschappen te openen.<br>
+           2. Ga naar het tabblad <em>Physical</em>.<br>
+           3. Zet het apparaat uit (klik op de aan/uit-knop).<br>
+           4. Sleep de bestaande NIC uit de sleuf.<br>
+           5. Sleep de juiste draadloze kaart vanuit het paneel aan de linkerkant in de sleuf.<br>
+           6. Zet het apparaat weer aan.</p>
+
+        <div class="note">
+          <strong>Laptops (Laptop_gast &amp; Laptop2):</strong> WPC300N (PCIe WiFi 2.4 GHz)<br>
+          <strong>Printer0:</strong> WMP300N (PCI WiFi 2.4 GHz)
+        </div>
+
+        <p>Na het plaatsen van de kaart kan het apparaat verbinding maken met een draadloos toegangspunt. Zonder deze stap zijn de WiFi-instellingen niet zichtbaar in de interface van het apparaat.</p>
+
+        <!-- ── OPDRACHT 2 ── -->
+        <h2 id="ccna-opdracht2">Opdracht 2 — Bouwen en configureren</h2>
+
+        <h3 id="ccna-o2-algemeen">Algemeen</h3>
+        <p><strong>A. Haal de apparaten uit de voorraadkast en bouw het netwerk in Arnhem, sluit alle apparaten aan.</strong></p>
+        <p>Haal alle apparaten op uit de voorraadkast en sluit ze aan volgens de aansluitingstabel. Let op het onderscheid tussen trunk- en access-poorten:</p>
+
+        <table>
+          <thead><tr><th>Van</th><th>Poort</th><th>Naar</th><th>Poort</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td>Core01_ARN</td><td>Fa0/1</td><td>SW01-ARN</td><td>Fa0/1</td><td>Trunk</td></tr>
+            <tr><td>Core01_ARN</td><td>Fa0/3</td><td>SW02-ARN</td><td>Fa0/3</td><td>Trunk</td></tr>
+            <tr><td>Core01_ARN</td><td>Fa0/24</td><td>AP_Gast</td><td>Port0</td><td>VLAN 50</td></tr>
+            <tr><td>SW01-ARN</td><td>Fa0/24</td><td>SW02-ARN</td><td>Fa0/23</td><td>Trunk</td></tr>
+            <tr><td>SW01-ARN</td><td>Fa0/4</td><td>PC4</td><td>Fa0</td><td>VLAN 30</td></tr>
+            <tr><td>SW01-ARN</td><td>Fa0/5</td><td>PC5</td><td>Fa0</td><td>VLAN 30</td></tr>
+            <tr><td>SW02-ARN</td><td>Fa0/4</td><td>PC3</td><td>Fa0</td><td>VLAN 40</td></tr>
+            <tr><td>SW02-ARN</td><td>G0/1</td><td>AP02</td><td>Port0</td><td>VLAN 40</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="ccna-o2-core01">Core01_ARN</h3>
+        
+        <p><strong>B. Maak de VLAN's aan op de Core01_ARN met de juiste namen</strong></p>
+        <p>Op de Core01_ARN (de Layer 3 switch) worden alle VLANs aangemaakt met de juiste namen. Dit is de VTP Server, dus de VLANs worden automatisch gesynchroniseerd naar de client-switches.</p>
+
+        <pre><code>Core01_ARN# configure terminal
+Core01_ARN(config)# vlan 5
+Core01_ARN(config-vlan)# name IT
+Core01_ARN(config-vlan)# exit
+Core01_ARN(config)# vlan 10
+Core01_ARN(config-vlan)# name Management
+Core01_ARN(config-vlan)# exit
+Core01_ARN(config)# vlan 20
+Core01_ARN(config-vlan)# name HR_Finance
+Core01_ARN(config-vlan)# exit
+Core01_ARN(config)# vlan 30
+Core01_ARN(config-vlan)# name Productie
+Core01_ARN(config-vlan)# exit
+Core01_ARN(config)# vlan 40
+Core01_ARN(config-vlan)# name Marketing
+Core01_ARN(config-vlan)# exit
+Core01_ARN(config)# vlan 50
+Core01_ARN(config-vlan)# name Gasten_WIFI
+Core01_ARN(config-vlan)# exit</code></pre>
+
+        <p>De VLANs 5, 10 en 20 komen overeen met de afdelingen op het hoofdkantoor in Nijmegen en worden meegesynchroniseerd via VTP. VLAN 30, 40 en 50 zijn specifiek voor Arnhem.</p>
+
+        <p><strong>C. Configureer VTP</strong></p>
+        <p>VTP (VLAN Trunking Protocol) zorgt ervoor dat VLAN-informatie automatisch wordt verspreid via trunk-links naar de client-switches, zodat je VLANs maar op één plek hoeft te beheren.</p>
+
+        <h4 id="ccna-vtp-server">Core01_ARN — VTP Server</h4>
+        <pre><code>Core01_ARN(config)# vtp domain SOLAR
+Core01_ARN(config)# vtp mode server</code></pre>
+
+        <h4 id="ccna-vtp-clients">SW01-ARN &amp; SW02-ARN — VTP Client</h4>
+        <pre><code>SW01-ARN(config)# vtp domain SOLAR
+SW01-ARN(config)# vtp mode client
+
+SW02-ARN(config)# vtp domain SOLAR
+SW02-ARN(config)# vtp mode client</code></pre>
+
+        <p>Zodra de trunk-verbindingen actief zijn, ontvangen de client-switches automatisch de VLAN-database van de server. Dit is te verifiëren met <code>show vtp status</code> en <code>show vlan brief</code>.</p>
+
+        <p><strong>D. Onderzoek welke switch de root is</strong></p>
+        <p>Spanning Tree Protocol (STP) voorkomt netwerklussen in geswitchte netwerken. Standaard wordt de root bridge bepaald op basis van het laagste bridge-ID (prioriteit + MAC-adres).</p>
+        
+        <pre><code>Core01_ARN# show spanning-tree</code></pre>
+        <p>Kijk bij elk VLAN naar de regel <em>"This bridge is the root"</em>. Als dit niet zo is, pas je de prioriteit aan.</p>
+
+        <p><strong>E. Maak Core01_ARN de root switch voor alle VLAN's.</strong></p>
+        <p>Om zeker te zijn dat Core01_ARN de root is voor alle VLANs, stellen we dit expliciet in:</p>
+        
+        <pre><code>Core01_ARN(config)# spanning-tree vlan 1,5,10,20,30,40,50 root primary</code></pre>
+        <p>Dit commando verlaagt de prioriteit automatisch naar 24576 (of lager dan de huidige laagste) zodat Core01_ARN altijd wint.</p>
+
+        <p><strong>F. Geef de VLAN's de daarvoor bestemde IP-adressen op Core01_ARN</strong></p>
+        <p>Op een Layer 3 switch worden Switched Virtual Interfaces (SVIs) gebruikt als default gateway voor elk VLAN. Elk VLAN krijgt een eigen IP-adres op de switch.</p>
+
+        <pre><code>Core01_ARN(config)# interface vlan 1
+Core01_ARN(config-if)# ip address 10.10.0.2 255.255.255.0
+Core01_ARN(config-if)# no shutdown
+Core01_ARN(config-if)# exit
+
+Core01_ARN(config)# interface vlan 30
+Core01_ARN(config-if)# ip address 10.10.30.1 255.255.255.0
+Core01_ARN(config-if)# no shutdown
+Core01_ARN(config-if)# exit
+
+Core01_ARN(config)# interface vlan 40
+Core01_ARN(config-if)# ip address 10.10.40.1 255.255.255.0
+Core01_ARN(config-if)# no shutdown
+Core01_ARN(config-if)# exit
+
+Core01_ARN(config)# interface vlan 50
+Core01_ARN(config-if)# ip address 10.10.50.1 255.255.255.0
+Core01_ARN(config-if)# no shutdown
+Core01_ARN(config-if)# exit</code></pre>
+
+        <p><strong>G. Maak de DHCP pools per VLAN aan op Core01_ARN</strong></p>
+        <p>De Core01_ARN fungeert als DHCP-server voor de drie VLANs. Eerst worden de exclusions ingesteld (statische IP's die niet uitgedeeld mogen worden), daarna de pools zelf.</p>
+
+        <h4 id="ccna-dhcp-exclusions">Exclusions</h4>
+        <pre><code>Core01_ARN(config)# ip dhcp excluded-address 10.10.30.1 10.10.30.50
+Core01_ARN(config)# ip dhcp excluded-address 10.10.40.1 10.10.40.50
+Core01_ARN(config)# ip dhcp excluded-address 10.10.50.1 10.10.50.50</code></pre>
+
+        <h4 id="ccna-dhcp-pools">Pools</h4>
+        <pre><code>Core01_ARN(config)# ip dhcp pool vlan30
+Core01_ARN(dhcp-config)# network 10.10.30.0 255.255.255.0
+Core01_ARN(dhcp-config)# default-router 10.10.30.1
+Core01_ARN(dhcp-config)# dns-server 62.36.55.85
+Core01_ARN(dhcp-config)# exit
+
+Core01_ARN(config)# ip dhcp pool vlan40
+Core01_ARN(dhcp-config)# network 10.10.40.0 255.255.255.0
+Core01_ARN(dhcp-config)# default-router 10.10.40.1
+Core01_ARN(dhcp-config)# dns-server 62.36.55.85
+Core01_ARN(dhcp-config)# exit
+
+Core01_ARN(config)# ip dhcp pool vlan50
+Core01_ARN(dhcp-config)# network 10.10.50.0 255.255.255.0
+Core01_ARN(dhcp-config)# default-router 10.10.50.1
+Core01_ARN(dhcp-config)# dns-server 62.36.55.85
+Core01_ARN(dhcp-config)# exit</code></pre>
+
+        <p>De exclusions zorgen ervoor dat de range .1 t/m .50 gereserveerd blijft voor statische apparaten (switches, routers, printers, access points). Eindapparaten zoals PC's en laptops krijgen automatisch een adres vanaf .51.</p>
+
+        <p><strong>H. Configureer de trunk poorten op Core01_ARN, laat alle vlan's door</strong></p>
+        <p>Trunk-poorten dragen verkeer van meerdere VLANs tegelijk, gecodeerd met 802.1Q tags. De verbindingen naar SW01-ARN en SW02-ARN moeten trunk zijn zodat al het VLAN-verkeer doorkomt.</p>
+
+        <pre><code>Core01_ARN(config)# interface fastEthernet 0/1
+Core01_ARN(config-if)# switchport mode trunk
+Core01_ARN(config-if)# switchport trunk allowed vlan all
+Core01_ARN(config-if)# exit
+
+Core01_ARN(config)# interface fastEthernet 0/3
+Core01_ARN(config-if)# switchport mode trunk
+Core01_ARN(config-if)# switchport trunk allowed vlan all
+Core01_ARN(config-if)# exit</code></pre>
+
+        <h4 id="ccna-trunk-sw01">Trunk op SW01-ARN</h4>
+        <pre><code>SW01-ARN(config)# interface fastEthernet 0/1
+SW01-ARN(config-if)# switchport mode trunk
+SW01-ARN(config-if)# exit
+
+SW01-ARN(config)# interface fastEthernet 0/24
+SW01-ARN(config-if)# switchport mode trunk
+SW01-ARN(config-if)# exit</code></pre>
+
+        <h4 id="ccna-trunk-sw02">Trunk op SW02-ARN</h4>
+        <pre><code>SW02-ARN(config)# interface fastEthernet 0/3
+SW02-ARN(config-if)# switchport mode trunk
+SW02-ARN(config-if)# exit
+
+SW02-ARN(config)# interface fastEthernet 0/23
+SW02-ARN(config-if)# switchport mode trunk
+SW02-ARN(config-if)# exit</code></pre>
+
+        <h3 id="ccna-o2-accessports">Access poorten configureren op SW01 &amp; SW02</h3>
+        <p>Access-poorten sturen verkeer van slechts één VLAN door, zonder 802.1Q tagging. Dit zijn de poorten waar eindapparaten (PC's, access points) op zijn aangesloten.</p>
+
+        <h4 id="ccna-access-sw01">SW01-ARN access poorten</h4>
+        <pre><code>SW01-ARN(config)# interface fastEthernet 0/4
+SW01-ARN(config-if)# switchport mode access
+SW01-ARN(config-if)# switchport access vlan 30
+SW01-ARN(config-if)# exit
+
+SW01-ARN(config)# interface fastEthernet 0/5
+SW01-ARN(config-if)# switchport mode access
+SW01-ARN(config-if)# switchport access vlan 30
+SW01-ARN(config-if)# exit</code></pre>
+
+        <h4 id="ccna-access-sw02">SW02-ARN access poorten</h4>
+        <pre><code>SW02-ARN(config)# interface fastEthernet 0/4
+SW02-ARN(config-if)# switchport mode access
+SW02-ARN(config-if)# switchport access vlan 40
+SW02-ARN(config-if)# exit
+
+SW02-ARN(config-if)# switchport access vlan 40
+SW02-ARN(config-if)# exit</code></pre>
+
+        <p><strong>I. Configureer ospf routing met deze commando:</strong></p>
+        <pre><code>router ospf 1
+network 10.0.0.0 0.255.255.255 area 0</code></pre>
+
+        <p>OSPF (Open Shortest Path First) zorgt voor routering tussen de verschillende locaties en subnetten. Met de wildcard <code>0.255.255.255</code> worden alle interfaces in het 10.x.x.x-blok meegenomen in area 0.</p>
+
+        <div class="note">
+          <strong>Let op:</strong> <code>ip routing</code> moet expliciet worden ingeschakeld op een Layer 3 switch, anders verwerkt hij geen inter-VLAN routing ondanks de geconfigureerde SVIs.
+        </div>
+
+        <h3 id="ccna-o2-sw-devices">SW01-ARN &amp; SW02-ARN</h3>
+        
+        <p><strong>A. Configureer de hostnames</strong></p>
+        <p><strong>B. Configureer VTP</strong></p>
+        <p><strong>C. Configureer de poorten voor de daarvoor bestemde Vlan's</strong></p>
+
+        <h4 id="ccna-trunk-sw01">Trunk op SW01-ARN</h4>
+        <pre><code>SW01-ARN(config)# interface fastEthernet 0/1
+SW01-ARN(config-if)# switchport mode trunk
+SW01-ARN(config-if)# exit
+
+SW01-ARN(config)# interface fastEthernet 0/24
+SW01-ARN(config-if)# switchport mode trunk
+SW01-ARN(config-if)# exit</code></pre>
+
+        <h4 id="ccna-trunk-sw02">Trunk op SW02-ARN</h4>
+        <pre><code>SW02-ARN(config)# interface fastEthernet 0/3
+SW02-ARN(config-if)# switchport mode trunk
+SW02-ARN(config-if)# exit
+
+SW02-ARN(config)# interface fastEthernet 0/23
+SW02-ARN(config-if)# switchport mode trunk
+SW02-ARN(config-if)# exit</code></pre>
+
+        <h4 id="ccna-access-sw01">SW01-ARN access poorten</h4>
+        <pre><code>SW01-ARN(config)# interface fastEthernet 0/4
+SW01-ARN(config-if)# switchport mode access
+SW01-ARN(config-if)# switchport access vlan 30
+SW01-ARN(config-if)# exit
+
+SW01-ARN(config)# interface fastEthernet 0/5
+SW01-ARN(config-if)# switchport mode access
+SW01-ARN(config-if)# switchport access vlan 30
+SW01-ARN(config-if)# exit</code></pre>
+
+        <h4 id="ccna-access-sw02">SW02-ARN access poorten</h4>
+        <pre><code>SW02-ARN(config)# interface fastEthernet 0/4
+SW02-ARN(config-if)# switchport mode access
+SW02-ARN(config-if)# switchport access vlan 40
+SW02-ARN(config-if)# exit
+
+SW02-ARN(config)# interface gigabitEthernet 0/1
+SW02-ARN(config-if)# switchport mode access
+SW02-ARN(config-if)# switchport access vlan 40
+SW02-ARN(config-if)# exit</code></pre>
+
+        <h3 id="ccna-o2-other">Overige apparaten</h3>
+        
+        <p><strong>A. Plaats de AP02 in de juiste VLAN en Configureer de WiFi instellingen.</strong></p>
+        <p><strong>B. Zorg ervoor dat de Printer0 een vast IP krijgt.</strong></p>
+        <p><strong>C. De overige PC's en Laptop krijgen via DHCP een IP-adres</strong></p>
+
+        <p>AP02 hangt via SW02-ARN in VLAN 40 (Marketing). Het access point wordt geconfigureerd met de volgende WiFi-instellingen:</p>
+
+        <div class="note">
+          <strong>SSID:</strong> Solar_Arnhem<br>
+          <strong>Wachtwoord:</strong> solar12345<br></code></pre>
+
+        <h3 id="ccna-o2-ospf">OSPF routing configureren</h3>
+        <p>OSPF (Open Shortest Path First) zorgt voor routering tussen de verschillende locaties en subnetten. Met de wildcard <code>0.255.255.255</code> worden alle interfaces in het 10.x.x.x-blok meegenomen in area 0.</p>
+
+        <pre><code>Core01_ARN(config)# ip routing
+Core01_ARN(config)# router ospf 1
+Core01_ARN(config-router)# network 10.0.0.0 0.255.255.255 area 0
+Core01_ARN(config-router)# exit</code></pre>
+
+        <div class="note">
+          <strong>Let op:</strong> <code>ip routing</code> moet expliciet worden ingeschakeld op een Layer 3 switch, anders verwerkt hij geen inter-VLAN routing ondanks de geconfigureerde SVIs.
+        </div>
+
+        <h3 id="ccna-o2-ap">AP02 configureren (Solar_Arnhem WiFi)</h3>
+        <p>AP02 hangt via SW02-ARN in VLAN 40 (Marketing). Het access point wordt geconfigureerd met de volgende WiFi-instellingen:</p>
+
+        <div class="note">
+          <strong>SSID:</strong> Solar_Arnhem<br>
+          <strong>Wachtwoord:</strong> solar12345<br>
+          <strong>Authenticatie:</strong> WPA2-PSK
+        </div>
+
+        <p>Klik op AP02 → tabblad <em>Config</em> → <em>Port 0</em> → stel SSID, authenticatie en wachtwoord in. Laptop2 en Printer0 verbinden vervolgens met dit SSID. Printer0 krijgt een <strong>vast IP</strong>: <code>10.10.40.60</code> met gateway <code>10.10.40.1</code>.</p>
+
+        <!-- ── OPDRACHT GAST ── -->
+        <h2 id="ccna-gast">Configureer de Gast Wifi en ACL</h2>
+
+        <p><strong>A. Plaats de Access Point en Laptop in de juiste VLan</strong></p>
+        <p><strong>B. Configureer de AP_Gast</strong></p>
+        <p>AP_Gast is direct aangesloten op poort Fa0/24 van Core01_ARN in VLAN 50. Configureer de access-poort op de switch en stel de WiFi-instellingen in op het access point:</p>
+
+        <pre><code>Core01_ARN(config)# interface fastEthernet 0/24
+Core01_ARN(config-if)# switchport mode access
+Core01_ARN(config-if)# switchport access vlan 50
+Core01_ARN(config-if)# exit</code></pre>
+
+        <div class="note">
+          <strong>SSID:</strong> Solar_gast<br>
+          <strong>Wachtwoord:</strong> welkom123<br>
+          <strong>Authenticatie:</strong> WPA2-PSK
+        </div>
+
+        <p>Laptop_gast verbindt met Solar_gast en ontvangt via DHCP een adres in het <code>10.10.50.0/24</code>-subnet.</p>
+
+        <p><strong>C. Configureer een ACL op de Core01_ARN met de volgende commando:</strong></p>
+        <pre><code>access-list 150 deny ip 10.10.50.0 0.0.0.255 10.10.30.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 10.10.40.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 172.16.10.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 172.16.5.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 172.16.20.0 0.0.0.255
+access-list 150 permit ip any any
+
+interface Vlan50
+  ip access-group 150 in</code></pre>
+
+        <p>De ACL (Access Control List) wordt gebruikt om gast-verkeer te beperken. Gasten mogen alleen naar internet en naar <code>www.solar.com</code>, maar niet naar interne netwerken van andere VLANs. De ACL wordt inbound toegepast op de VLAN 50-interface, zodat verkeer wordt gefilterd op het moment dat het de switch inkomt vanuit het gastnetwerk.</p>
+
+        <p>De laatste regel <code>permit ip any any</code> is cruciaal: zonder deze regel zou de impliciete <em>deny all</em> aan het einde van elke ACL ook het internetverkeer blokkeren. Nu wordt alleen het intranet-verkeer geblokkeerd, en al het overige (inclusief internet) doorgelaten.</p>
+
+        <!-- ── OPDRACHT 3 ── -->
+        <h2 id="ccna-opdracht3">Opdracht 3 — Testen</h2>
+        
+        <p><strong>Plaats screenshots van alle stappen en geef aan hoe je dit hebt gedaan en waarom het wel of niet is gelukt.</strong></p>
+
+        <h3 id="ccna-test-a">A. Ga via PC3 naar www.solar.com</h3>
+        <p>PC3 zit in VLAN 40 (Marketing) en krijgt via DHCP een IP in <code>10.10.40.0/24</code>. Open de webbrowser op PC3 en navigeer naar <code>www.solar.com</code>. De DNS-server (<code>62.36.55.85</code>) lost de domeinnaam op en de webserver reageert. Dit werkt als de DHCP-pool correct is geconfigureerd en OSPF-routing actief is.</p>
+
+        <h3 id="ccna-test-b">B. Ga via de webbrowser van PC5 naar 172.16.5.30</h3>
+        <p>PC5 zit in VLAN 30 (Productie). Het adres <code>172.16.5.30</code> is een server op het intranet van Nijmegen (IT-subnet). Via de browser op PC5 navigeer je naar dit adres. Dit vereist dat OSPF de route naar <code>172.16.5.0/24</code> heeft geleerd via de router in Nijmegen. Als OSPF correct convergeert, is de server bereikbaar.</p>
+
+        <h3 id="ccna-test-c">C. Ping vanuit PC2 naar PC4</h3>
+        <p>PC2 bevindt zich buiten Arnhem (op een ander subnet). PC4 zit in VLAN 30 op <code>10.10.30.0/24</code>. Open de command prompt op PC2 en voer uit:</p>
+        <pre><code>ping 10.10.30.x</code></pre>
+        <p>Een succesvolle ping bevestigt dat inter-site routing via OSPF functioneert en dat de SVI van VLAN 30 actief is. Als de ping mislukt, controleer dan eerst met <code>show ip route</code> op Core01_ARN of de routes aanwezig zijn.</p>
+
+        <h3 id="ccna-test-d">D. Verifieer als je via het gasten WiFi op de INTRANET kunt, dit zou niet mogen</h3>
+        <p>Laptop_gast verbindt met het Solar_gast netwerk en ontvangt een IP in <code>10.10.50.0/24</code>. Test het volgende:</p>
+
+        <p><strong>Moet mislukken (geblokkeerd door ACL 150):</strong></p>
+        <pre><code>ping 10.10.30.1   ← VLAN 30 Productie
+ping 10.10.40.1   ← VLAN 40 Marketing
+ping 172.16.5.1   ← IT Nijmegen</code></pre>
+
+        <p><strong>Je mag alleen op www.solar.com via het gasten WiFi:</strong></p>
+        <pre><code>Webbrowser → www.solar.com</code></pre>
+
+        <p>De ACL laat <code>permit ip any any</code> toe voor al het andere verkeer, waardoor internetverkeer doorkomt. De specifieke deny-regels blokkeren uitsluitend de interne subnetten. Dit is de juiste werking: gasten hebben internettoegang maar kunnen het bedrijfsnetwerk niet benaderen.</p>
+
+        <hr>
+
+      </div><!-- /content -->
+    </div><!-- /page-ccna -->
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE: PYTHON
+    ════════════════════════════════════════════════════════ -->
+    <div id="page-python" class="page-content">
+      <div class="coming-soon">
+        <div class="cs-icon">🐍</div>
+        <p>Python — Binnenkort beschikbaar</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PAGE: SECURITY
+    ════════════════════════════════════════════════════════ -->
+    <div id="page-security" class="page-content">
+      <div class="coming-soon">
+        <div class="cs-icon">🔒</div>
+        <p>Security — Binnenkort beschikbaar</p>
+      </div>
+    </div>
+
   </main>
 </div>
 
