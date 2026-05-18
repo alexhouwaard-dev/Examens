@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.topic-button').forEach(btn => {
     btn.addEventListener('click', () => {
       const pageId = btn.dataset.page;
-      if (pageId && pageId !== 'python' && pageId !== 'security') {
+      if (pageId) {
         switchPage(pageId);
       }
     });
