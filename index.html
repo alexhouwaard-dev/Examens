@@ -486,6 +486,150 @@ ping 172.16.5.1   ← IT Nijmegen</code></pre>
         <hr>
 
       </div><!-- /content -->
+      <div class="content">
+<div class="post-eyebrow">Netwerk Engineering · Cisco</div>
+      <h1 class="post-title">CCNA — Testing</h1>
+      <div class="post-meta">
+        <span>2026</span>
+        <span class="dot">◆</span>
+        <span class="post-tag">Cisco IOS</span>
+        <span class="post-tag">VLAN</span>
+        <span class="post-tag">OSPF</span>
+        <span class="post-tag">ACL</span>
+      </div>
+      <div class="post-accent"></div>
+        <h2 id="ccna-inventarisatie">Opdracht 1: Inventarisatie</h2>
+        <p>Je ontvangt van de leidinggevende het document Bijlage 1 - Netwerk Documentatie, waarin alle technische informatie van het netwerkinfrastructuur zijn vastgelegd.</p>
+        <p>Open het bestand <code>Solarplex_Cloud.pka</code>.</p>
+        <p>Sluit een Laptop aan op de juiste poort (Vlan 30). Gebruik dit om vervolgens via SSH op de devices in te loggen. Vraag per device via de LLDP neighbours de tabellen aan en maak eens inventarisatie van alle aangesloten devices in de onderstaande tabel.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Device</th>
+              <th>IP-adres</th>
+              <th>Interface</th>
+              <th>Verbonden met</th>
+              <th>Device</th>
+              <th>Interface</th>
+              <th>Trunk/ Access</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SW_Core</td>
+              <td>10.30.0.2</td>
+              <td>G3/1</td>
+              <td>Main_L3</td>
+              <td>G1/0/2</td>
+              <td>Trunk</td>
+              <td></td>
+            </tr>
+            <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <p>Maak een netwerktekening van alle apparaten in de distribution-infrastructuur aan de hand van de tabel.</p>
+        <p>Benoem in de tekening:</p>
+        <ul>
+          <li>De servers in de Core-laag</li>
+          <li>De routers en switches in de Distribution-laag</li>
+          <li>Noteer bij alle verbindingen de transmissiesnelheid.</li>
+        </ul>
+        <p>Maak gebruik van Visio en plaats de afbeelding hieronder.</p>
+
+        <h2 id="ccna-verificatie-testen">Opdracht 2: verificatie en Testen</h2>
+        <p>Controleer en test als de volgende configuraties/instellingen op de apparaten zijn uitgevoerd.</p>
+        <p>Gebruik de onderstaande tabel om dit uit te werken:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Controle Item</th>
+              <th>Apparaten</th>
+              <th>Welke tools gebruikt?</th>
+              <th>Hoe heb je dit uitgevoerd?</th>
+              <th>Resultaat</th>
+              <th>Afwijking (indien geconstateerd) of advies</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trunking staat aan alleen voor VLAN 20,21, 22,23 &amp; 30</td>
+              <td>SW1-SW3</td>
+              <td>CLI via SSH: <code>show interfaces trunk</code>, <code>show running-config interface</code></td>
+              <td>Inloggen via SSH op elke switch, trunk-interfaces controleren en allowed VLAN-lijst verifiëren op VLAN 20,21,22,23,30.</td>
+              <td>Voldaan wanneer alleen de opgegeven VLAN's op trunk links zijn toegestaan.</td>
+              <td>Als extra VLAN's zichtbaar zijn: <code>switchport trunk allowed vlan 20,21,22,23,30</code> toepassen.</td>
+            </tr>
+            <tr>
+              <td>Telnet is uitgeschakeld</td>
+              <td>SW1-SW3</td>
+              <td>CLI via SSH: <code>show running-config | section line vty</code></td>
+              <td>Controleren of bij <code>line vty</code> alleen <code>transport input ssh</code> staat en geen <code>telnet</code>.</td>
+              <td>Voldaan als Telnet nergens is toegestaan op de VTY-lijnen.</td>
+              <td>Bij afwijking: <code>transport input ssh</code> instellen en lokale user/AAA-check uitvoeren.</td>
+            </tr>
+            <tr>
+              <td>Wachtwoorden zijn versleuteld opgeslagen</td>
+              <td>Main_L3, SW1-Sw3, SW_Core, SW_back_01, Edge &amp; Firewall</td>
+              <td>CLI: <code>show running-config</code></td>
+              <td>Controleren op <code>service password-encryption</code> en gehashte waarden bij <code>username</code>/<code>enable secret</code>.</td>
+              <td>Voldaan wanneer geen plaintext wachtwoorden zichtbaar zijn.</td>
+              <td>Advies: gebruik <code>enable secret</code> en waar mogelijk Type 8/9 hashing.</td>
+            </tr>
+            <tr>
+              <td>Er kan alleen via SSH remote ingelogd worden</td>
+              <td>Main_L3, SW1-Sw3, SW_Core, SW_back_01, Edge &amp; Firewall</td>
+              <td>CLI: <code>show ip ssh</code>, <code>show running-config | section line vty</code></td>
+              <td>SSH-status controleren en verifiëren dat VTY alleen SSH accepteert; testlogin met SSH uitvoeren.</td>
+              <td>Voldaan indien SSH actief is en Telnet wordt geweigerd.</td>
+              <td>Bij afwijking SSH keys genereren, domain-name zetten en VTY beperken tot SSH.</td>
+            </tr>
+            <tr>
+              <td>Werkplek PC's kunnen op Intranet webpagina</td>
+              <td>PC Webbrowser + <code>ping</code> + <code>tracert</code></td>
+              <td>Vanaf meerdere werkplekken URL openen (bijv. <code>http://172.16.5.30</code> of <code>www.solar.com</code>) en connectiviteit testen.</td>
+              <td>Voldaan wanneer pagina laadt en route naar intranet bereikbaar is.</td>
+              <td>Bij storing: VLAN/gateway, DNS en ACL-regels controleren.</td>
+            </tr>
+            <tr>
+              <td>Privileged Exec (enable) mode is ingeschakeld</td>
+              <td>Main_L3, SW1-SW3, SW_Core, SW_back_01, Edge &amp; Firewall</td>
+              <td>CLI: <code>show running-config | include enable secret</code></td>
+              <td>Controleren dat <code>enable secret</code> is geconfigureerd en met test-login naar <code>#</code> prompt gaan.</td>
+              <td>Voldaan als privileged mode alleen met geldig geheim bereikbaar is.</td>
+              <td>Advies: geen <code>enable password</code> gebruiken, alleen <code>enable secret</code>.</td>
+            </tr>
+            <tr>
+              <td>NTP Server is geconfigureerd</td>
+              <td>Main_L3, SW1-Sw3, SW_Core, SW_back_01, Edge &amp; Firewall</td>
+              <td>CLI: <code>show running-config | include ntp</code>, <code>show ntp status</code></td>
+              <td>NTP server-config en synchronisatiestatus controleren op alle netwerkdevices.</td>
+              <td>Voldaan als devices synchronized zijn met de ingestelde NTP-bron.</td>
+              <td>Bij afwijking: NTP-server IP/bereikbaarheid en timezone-instellingen corrigeren.</td>
+            </tr>
+            <tr>
+              <td>Logging naar Syslog server is geconfigureerd</td>
+              <td>Main_L3, SW1-Sw3, SW_Core, SW_back_01, Edge &amp; Firewall</td>
+              <td>CLI: <code>show running-config | include logging</code>, <code>show logging</code></td>
+              <td>Syslog host, severity en broninterface controleren; test event genereren en ontvangst op syslog-server bevestigen.</td>
+              <td>Voldaan wanneer logs zichtbaar binnenkomen op de centrale syslog-server.</td>
+              <td>Bij afwijking: logging host/facility, ACL en bereikbaarheid van syslog-server nalopen.</td>
+            </tr>
+            <tr>
+              <td>Controleer IOS versie</td>
+              <td>Main_L3, SW1-Sw3, SW_Core, SW_backone, Edge &amp; Firewall</td>
+              <td>CLI van device via SSH: <code>show version</code></td>
+              <td>Per device inloggen en IOS-versie, image-naam en uptime registreren; vergelijken met netwerkdocumentatie.</td>
+              <td>Voldaan als alle versies overeenkomen met de afgesproken baseline.</td>
+              <td>Advies: afwijkende versies opnemen in upgradeplanning en change-management.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div><!-- /page-ccna -->
 
     <!-- ═══════════════════════════════════════════════════════
