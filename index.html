@@ -14,7 +14,7 @@
 
 <!-- HEADER -->
 <header>
-  <div class="logo" id="logo">Alex's <span>Examens</span></div>
+  <div class="logo" id="logo">Examen <span>Archive</span></div>
   <div class="header-rule"></div>
   <div class="header-meta">Est. 2026</div>
 </header>
@@ -47,14 +47,14 @@
     <div id="page-home" class="page-content active">
       <div class="home-container">
         <div class="home-hero">
-          <h1 class="home-title">Alex's <span>Examens</span></h1>
+          <h1 class="home-title">Examen <span>Archive</span></h1>
           <p class="home-subtitle">Een verzameling van technische documentatie en leermateriaal</p>
           <div class="home-divider"></div>
         </div>
         <div class="home-content">
           <section class="home-section">
             <h2>Welkom</h2>
-            <p>Als je je Exmamens goed wil uitvoeren moet je vooral het examen goed lezen en het examen stap voor stap volgen en sla geen dingen over. Kijk Vooral goed in de bijlagen</p>
+            <p><b>Als je je Exmamens goed wil uitvoeren moet je vooral het examen goed lezen en het examen stap voor stap volgen en sla geen dingen over. Kijk Vooral goed in de bijlagen</p>
           </section>
 
           <section class="home-section">
@@ -656,7 +656,7 @@ ping 172.16.5.1   ← IT Nijmegen</code></pre>
          PAGE: PYTHON
     ════════════════════════════════════════════════════════ -->
     <div id="page-python" class="page-content">
-              <h1 class="post-title">Python — Casus sportvereniging</h1>
+              <h1 class="post-title">Python — Casus sportvereniging Ontwerp</h1>
       <div class="post-meta">
         <span>2026</span>
         <span class="dot">◆</span>
@@ -670,23 +670,37 @@ ping 172.16.5.1   ← IT Nijmegen</code></pre>
         <p>Het bestuur heeft een lijst met eisen en wensen opgesteld. Deze zijn per opdracht voor je op een rij gezet. Bij opdracht 3 is het van belang dat je het document <code>Technische_beschrijving_database</code> goed bestudeerd.</p>
         <p>Misschien heb je nog vragen na het lezen van de behoefte. Inventariseer wat je verder nog wilt weten en stel je vragen in de groep op het moment dat de opdrachtgever daar de gelegenheid toe geeft. Antwoorden worden plenair gegeven.</p>
 
+        <h2>Dit moet je antwoorden en opleveren!</h2>
+
         <h3>Inleiding</h3>
         <p>Beschrijf in het kort waarom de applicatie moet worden ontwikkeld. Wat is het probleem en wat is de oplossing?</p>
+        <p><strong>A: De plaatselijke sportvereniging wil dat er een systeem komt voor het bijhouden van de administratie. De oplossing hier voor is het ontwikkelen van een Python-script dat de gegevens uit de csv-bestanden leest en een overzicht van de leden met een betalingsachterstand genereert.</strong></p>
+        <br>
 
         <h3>Eisen en wensen</h3>
         <p>Benoem alle (functionele) wensen en eisen van de klant. Voeg daar alle relevante aspecten aan toe die jij als ict'er altijd meeneemt (security &amp; privacy).</p>
+        <p><strong>A: De applicatie moet automatisch de juiste gegevens koppelen, leden zonder achterstand wegfilteren en een nieuwe lijst exporteren. Daarnaast moet het programma volledig lokaal en veilig werken volgens de privacywetgeving en heel makkelijk te gebruiken zijn.</strong></p>
+        <br>
 
         <h3>Kaders en uitgangspunten</h3>
         <p>Benoem alle zaken waarop je het ontwikkelen en het eindproduct baseert. Bijvoorbeeld dat de bronbestanden in een bepaald formaat moeten worden aangeleverd en dat er gebruik wordt gemaakt van Python.</p>
+        <p><strong>A: De bronbestanden moeten in csv-formaat worden aangeleverd, met specifieke kolommen voor lidmaatschapsnummer, adres en openstaand bedrag. Het script zal worden geschreven in Python en moet compatibel zijn met de meest recente versie van Python 3.</strong></p>
+        <br>
 
         <h3>Procesbeschrijving</h3>
         <p>Omschrijf hoe het proces wordt doorlopen. Licht dat toe aan de hand van een stroomschema.</p>
+        <p><strong>A: Het proces begint met het inlezen van de csv-bestanden. Vervolgens worden de gegevens gekoppeld op basis van het lidmaatschapsnummer. Daarna worden leden zonder betalingsachterstand gefilterd en wordt een nieuwe lijst gegenereerd. Tot slot wordt deze lijst geëxporteerd naar een nieuw csv-bestand.</strong></p>
+        <br>
 
         <h3>In- en uitvoer</h3>
         <p>Geef een overzicht van de in- en uitvoerproducten. Geef een voorbeeld van de data.</p>
+        <p><strong>A: De invoer bestaat uit twee csv-bestanden: leden.csv en contributie.csv. De uitvoer is een nieuw csv-bestand met de gegevens van de leden die een betalingsachterstand hebben, inclusief het lidmaatschapsnummer, naam en het openstaande bedrag.</strong></p>
+        <br>
 
         <h3>User interface</h3>
         <p>Toon een voorbeeld van de user interface.</p>
+        <p><strong>A: De user interface is een eenvoudige command-line interface waarin de gebruiker via een keuze menu kan invoeren welke informatie zijn wilt zien. Er is ook een optie om de gegenereerde lijst te exporteren.</strong></p>
+        <br>
 
         <h2>Opdracht 1</h2>
         <p><strong>Ontwerp een informatievoorziening</strong></p>
