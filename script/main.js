@@ -69,29 +69,21 @@ function buildTOC(pageId) {
 
   const pageEl  = document.getElementById('page-' + pageId);
   if (!pageEl) return;
-  const headings = pageEl.querySelectorAll('.content h1.post-title, .content h2, .content h3');
+
+  // Explicitly mark sidebar headings so TOC selection stays reliable.
+  pageEl.querySelectorAll('.post-title, .content h2').forEach(h => {
+    h.classList.add('sidebar-heading');
+  });
+
+  const headings = pageEl.querySelectorAll('.sidebar-heading');
   if (!headings.length) {
     panel.innerHTML = '<p class="toc-empty">Nog geen inhoud.</p>';
     return;
   }
 
-  const pageTitle = pageEl.querySelector('.post-title');
-  if (pageTitle && headings[0]) {
-    const titleLink = document.createElement('a');
-    titleLink.className = 'tree-link-h2';
-    titleLink.href = '#' + headings[0].id;
-    titleLink.textContent = pageTitle.textContent;
-    titleLink.addEventListener('click', e => {
-      e.preventDefault();
-      smoothScroll(headings[0].id);
-    });
-    panel.appendChild(titleLink);
-  }
-
   const ul = document.createElement('ul');
   ul.className = 'tree';
 
-  let currentH3List = null;
   const usedIds = new Set();
 
   function ensureHeadingId(heading) {
@@ -138,32 +130,20 @@ function buildTOC(pageId) {
       
       li.appendChild(a);
       ul.appendChild(li);
-
-      // Create list for H3s under this H2
-      currentH3List = document.createElement('ul');
-      currentH3List.className = 'tree-h3-list';
-      li.appendChild(currentH3List);
-
-    } else if (tag === 'h3') {
-      if (!currentH3List) return;
-      
-      const li = document.createElement('li');
-      li.className = 'tree-item h3-item';
-
-      const a = document.createElement('a');
-      a.className = 'tree-link-h3';
-      a.href = '#' + id;
-      a.textContent = text;
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        smoothScroll(id);
-      });
-      
-      li.appendChild(a);
-      currentH3List.appendChild(li);
-
     }
   });
+
+  if (pageId === 'ccna') {
+    const pdfLi = document.createElement('li');
+    pdfLi.className = 'tree-item h2-item';
+    const pdfLink = document.createElement('a');
+    pdfLink.className = 'tree-link-h2';
+    pdfLink.href = 'static/CCNA_Commandos.pdf';
+    pdfLink.setAttribute('download', '');
+    pdfLink.textContent = 'CCNA_Handige commands';
+    pdfLi.appendChild(pdfLink);
+    ul.appendChild(pdfLi);
+  }
 
   panel.appendChild(ul);
 
@@ -175,7 +155,7 @@ function buildTOC(pageId) {
 function activateHighlight(pageId) {
   const pageEl   = document.getElementById('page-' + pageId);
   if (!pageEl) return;
-  const headings = [...pageEl.querySelectorAll('.content h1.post-title, .content h2, .content h3')];
+  const headings = [...pageEl.querySelectorAll('.sidebar-heading')];
   const panel    = document.querySelector(`.toc-panel[data-toc="${pageId}"]`);
 
   const observer = new IntersectionObserver(entries => {
@@ -186,24 +166,10 @@ function activateHighlight(pageId) {
       // Remove all active highlights
       panel.querySelectorAll('a').forEach(l => l.classList.remove('active'));
 
-      // Highlight current link and parent H2
+      // Highlight current link
       const link = panel.querySelector(`a[href="#${id}"]`);
       if (link) {
         link.classList.add('active');
-        
-        // Also highlight parent H2 if this is H3 or H4
-        const heading = entry.target;
-        if (heading.tagName !== 'H2') {
-          let prev = heading.previousElementSibling;
-          while (prev) {
-            if (prev.tagName === 'H2') {
-              const h2Link = panel.querySelector(`a[href="#${prev.id}"]`);
-              if (h2Link) h2Link.classList.add('active');
-              break;
-            }
-            prev = prev.previousElementSibling;
-          }
-        }
       }
     });
   }, { rootMargin: '-15% 0px -70% 0px' });

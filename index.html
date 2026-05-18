@@ -93,6 +93,22 @@
          PAGE: CCNA
     ════════════════════════════════════════════════════════ -->
     <div id="page-ccna" class="page-content">
+            <div class="post-eyebrow">Netwerk Engineering · Cisco</div>
+      <h1 class="post-title">CCNA — Handige Commandos</h1>
+      <div class="post-meta">
+        <span>2026</span>
+        <span class="dot">◆</span>
+        <span class="post-tag">PDF</span>
+      </div>
+      <div class="content">
+        <img src="static/CCNA-Commandos.png" alt="Handige CCNA commandos" class="content-image" style="width: 100%">
+        <br>
+        <br>
+        <p>
+          <a class="download-button" href="static/CCNA_Commandos.pdf" download>Handige commandos</a>
+        </p>
+        </div>
+              <div class="post-accent"></div>
       <div class="post-eyebrow">Netwerk Engineering · Cisco</div>
       <h1 class="post-title">CCNA — Solar Plex Arnhem</h1>
       <div class="post-meta">
@@ -103,7 +119,6 @@
         <span class="post-tag">OSPF</span>
         <span class="post-tag">ACL</span>
       </div>
-      <div class="post-accent"></div>
 
       <div class="content">
         <h2 id="ccna-topology">Topologie</h2>
@@ -483,6 +498,8 @@ ping 172.16.5.1   ← IT Nijmegen</code></pre>
 
         <p>De ACL laat <code>permit ip any any</code> toe voor al het andere verkeer, waardoor internetverkeer doorkomt. De specifieke deny-regels blokkeren uitsluitend de interne subnetten. Dit is de juiste werking: gasten hebben internettoegang maar kunnen het bedrijfsnetwerk niet benaderen.</p>
 
+
+
         <hr>
 
       </div><!-- /content -->
@@ -498,10 +515,12 @@ ping 172.16.5.1   ← IT Nijmegen</code></pre>
         <span class="post-tag">ACL</span>
       </div>
       <div class="post-accent"></div>
+      <img src="static/CCNA-Testing.png" alt="">
         <h2 id="ccna-inventarisatie">Opdracht 1: Inventarisatie</h2>
         <p>Je ontvangt van de leidinggevende het document Bijlage 1 - Netwerk Documentatie, waarin alle technische informatie van het netwerkinfrastructuur zijn vastgelegd.</p>
         <p>Open het bestand <code>Solarplex_Cloud.pka</code>.</p>
         <p>Sluit een Laptop aan op de juiste poort (Vlan 30). Gebruik dit om vervolgens via SSH op de devices in te loggen. Vraag per device via de LLDP neighbours de tabellen aan en maak eens inventarisatie van alle aangesloten devices in de onderstaande tabel.</p>
+        <pre><code>Main_L3# SSH 10.30.0.2</code></pre>
 
         <table>
           <thead>

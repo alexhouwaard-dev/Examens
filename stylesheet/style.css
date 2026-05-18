@@ -658,6 +658,25 @@ main {
   transform: translateX(2px);
 }
 
+.download-button {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--violet), var(--lavender));
+  color: var(--parchment);
+  text-decoration: none;
+  border: 1px solid rgba(128,117,255,.45);
+  padding: .6rem 1.1rem;
+  border-radius: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: .78rem;
+  letter-spacing: .04em;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.download-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(99,32,238,.3);
+}
+
 .tips-list {
   list-style: none;
   padding: 0;
