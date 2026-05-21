@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -744,7 +744,462 @@ ping 172.16.5.1   ← IT Nijmegen</code></pre>
           </ul>
 
         </p>
-        <img src="static/Flowchart-Diagram.png" alt="Stroomschema proces">
+        <img src="static/Diagram.png" alt="Stroomschema proces">
+
+        <h2 id="python-csv-bestanden">CSV-bestanden lezen en koppelen in Python</h2>
+        <p>Hieronder staat eerst een volledig voorbeeld met auto's. Daarna wordt stap voor stap uitgelegd wat elke functie doet en hoe je data naar functies stuurt.</p>
+
+        <div class="note">
+          <strong>Overzichtelijke aanpak:</strong><br>
+          1. Lees elk csv-bestand uit met een functie.<br>
+          2. Zet de eerste regel in een <code>header</code>-lijst.<br>
+          3. Zet de overige regels in een <code>data</code>-lijst.<br>
+          4. Valideer belangrijke velden zoals <code>kenteken</code>, <code>postcode</code> en <code>plaats</code>.<br>
+          5. Koppel twee csv-bestanden via een unieke waarde, zoals <code>kenteken</code>.<br>
+          6. Toon of exporteer het eindresultaat.
+        </div>
+
+        <h3 id="python-auto-volledig">Volledig voorbeeld: auto's uitlezen en koppelen</h3>
+        <h4>Volledige functie om CSV-data uit te lezen</h4>
+        <p>Deze functie kun je voor bijna elk csv-bestand gebruiken. De functie haalt de header uit de eerste regel en zet alle overige rijen in een aparte datalijst.</p>
+        <pre><code>import csv
+
+def lees_csv_bestand(bestandsnaam):
+    # Open het csv-bestand.
+    with open(bestandsnaam, newline="", encoding="utf-8") as bestand:
+        # Lees elke regel als een lijst.
+        reader = csv.reader(bestand)
+
+        # Pak de eerste regel als header.
+        header = next(reader)
+
+        # De rest van het bestand is de data.
+        data = list(reader)
+
+    # Geef beide lijsten terug.
+    return header, data</code></pre>
+
+        <h4>Header uitlezen met next()</h4>
+        <p>Je kunt de header ook direct uitlezen met <code>next(reader)</code>. Dat is vaak overzichtelijker: <code>next(reader)</code> pakt de eerste regel uit het csv-bestand en daarna blijven alleen de datarijen over.</p>
+        <pre><code>import csv
+
+def lees_csv_bestand(bestandsnaam):
+    with open(bestandsnaam, newline="", encoding="utf-8") as bestand:
+        reader = csv.reader(bestand)
+
+        # Pak de eerste regel uit het bestand.
+        header = next(reader)
+
+        # Alles wat overblijft zijn de datarijen.
+        data = list(reader)
+
+    return header, data</code></pre>
+
+        <div class="note">
+          <strong>Kort gezegd:</strong> <code>header = next(reader)</code> betekent: lees de eerste rij en bewaar die als header. Daarna begint <code>reader</code> automatisch bij de tweede rij.
+        </div>
+
+        <p>Voorbeeld van <code>autos.csv</code>:</p>
+        <pre><code>kenteken,merk,kleur,type,postcode,plaats
+AB-123-C,Toyota,blauw,Yaris,1234 AB,Arnhem
+CD-456-E,Volkswagen,zwart,Golf,5678 CD,Nijmegen
+EF-789-G,Ford,wit,Focus,3456 EF,Utrecht</code></pre>
+
+        <p>Voorbeeld van <code>kosten.csv</code>:</p>
+        <pre><code>kenteken,bedrag
+AB-123-C,250.00
+CD-456-E,125.50
+EF-789-G,0.00</code></pre>
+
+        <p>Deze volledige code leest beide csv-bestanden uit, valideert de autodata, koppelt de bestanden via <code>kenteken</code> en toont alles samen in een overzichtelijke tabel.</p>
+        <pre><code>import csv
+import re
+
+def lees_csv_bestand(bestandsnaam):
+    # Open het csv-bestand.
+    with open(bestandsnaam, newline="", encoding="utf-8") as bestand:
+        reader = csv.reader(bestand)
+
+        # De eerste rij is de header.
+        header = next(reader)
+
+        # Alle rijen daarna zijn de data.
+        data = list(reader)
+
+    return header, data
+
+def kolom_index(header, kolomnaam):
+    # Zoek op welke plek een kolom staat.
+    return header.index(kolomnaam)
+
+def bedrag_naar_float(waarde):
+    # Maak van tekst een getal.
+    return float(waarde.replace(",", "."))
+
+def valideer_kenteken(kenteken):
+    # Voorbeeldformaat: AB-123-C
+    kenteken = kenteken.strip().upper()
+    patroon = r"[A-Z]{2}-[0-9]{3}-[A-Z]"
+
+    return re.fullmatch(patroon, kenteken) is not None
+
+def valideer_postcode(postcode):
+    # Voorbeeldformaat: 1234 AB of 1234AB
+    postcode = postcode.strip().upper()
+    patroon = r"[1-9][0-9]{3} ?[A-Z]{2}"
+
+    return re.fullmatch(patroon, postcode) is not None
+
+def valideer_plaats(plaats):
+    # Een plaats mag niet leeg zijn en moet vooral uit letters bestaan.
+    plaats = plaats.strip()
+    controle = plaats.replace(" ", "").replace("-", "").replace("'", "")
+
+    return len(plaats) &gt;= 2 and controle.isalpha()
+
+def valideer_auto_rij(autos_header, auto):
+    kenteken_index = kolom_index(autos_header, "kenteken")
+    postcode_index = kolom_index(autos_header, "postcode")
+    plaats_index = kolom_index(autos_header, "plaats")
+
+    kenteken = auto[kenteken_index]
+    postcode = auto[postcode_index]
+    plaats = auto[plaats_index]
+
+    if not valideer_kenteken(kenteken):
+        return False, "Ongeldig kenteken"
+
+    if not valideer_postcode(postcode):
+        return False, "Ongeldige postcode"
+
+    if not valideer_plaats(plaats):
+        return False, "Ongeldige plaats"
+
+    return True, "Rij is geldig"
+
+def koppel_autos_met_kosten(autos_header, autos_data, kosten_header, kosten_data):
+    # Zoek de juiste kolomposities in autos.csv.
+    auto_kenteken_index = kolom_index(autos_header, "kenteken")
+    merk_index = kolom_index(autos_header, "merk")
+    kleur_index = kolom_index(autos_header, "kleur")
+    type_index = kolom_index(autos_header, "type")
+    postcode_index = kolom_index(autos_header, "postcode")
+    plaats_index = kolom_index(autos_header, "plaats")
+
+    # Zoek de juiste kolomposities in kosten.csv.
+    kosten_kenteken_index = kolom_index(kosten_header, "kenteken")
+    bedrag_index = kolom_index(kosten_header, "bedrag")
+
+    # Maak een snelle zoeklijst met kenteken als sleutel.
+    autos_op_kenteken = {}
+    fouten = []
+
+    for auto in autos_data:
+        is_geldig, melding = valideer_auto_rij(autos_header, auto)
+
+        if not is_geldig:
+            fouten.append([auto, melding])
+            continue
+
+        kenteken = auto[auto_kenteken_index].strip().upper()
+        autos_op_kenteken[kenteken] = auto
+
+    # Dit wordt de header van het eindresultaat.
+    resultaat_header = ["kenteken", "merk", "kleur", "type", "postcode", "plaats", "bedrag"]
+
+    # Hier komen alle gekoppelde rijen in.
+    resultaat_data = []
+
+    for kostenrij in kosten_data:
+        kenteken = kostenrij[kosten_kenteken_index].strip().upper()
+        bedrag = bedrag_naar_float(kostenrij[bedrag_index])
+
+        if kenteken in autos_op_kenteken:
+            auto = autos_op_kenteken[kenteken]
+
+            resultaat_data.append([
+                kenteken,
+                auto[merk_index],
+                auto[kleur_index],
+                auto[type_index],
+                auto[postcode_index],
+                auto[plaats_index],
+                f"{bedrag:.2f}"
+            ])
+
+    return resultaat_header, resultaat_data, fouten
+
+def toon_tabel(header, data):
+    # Toon de header netjes bovenaan.
+    print(
+        f"{header[0]:&lt;10} {header[1]:&lt;15} {header[2]:&lt;10} "
+        f"{header[3]:&lt;12} {header[4]:&lt;10} {header[5]:&lt;12} {header[6]:&gt;10}"
+    )
+    print("-" * 88)
+
+    # Toon daarna elke rij data.
+    for rij in data:
+        print(
+            f"{rij[0]:&lt;10} {rij[1]:&lt;15} {rij[2]:&lt;10} "
+            f"{rij[3]:&lt;12} {rij[4]:&lt;10} {rij[5]:&lt;12} {rij[6]:&gt;10}"
+        )
+
+# Lees de twee csv-bestanden in.
+autos_header, autos_data = lees_csv_bestand("autos.csv")
+kosten_header, kosten_data = lees_csv_bestand("kosten.csv")
+
+# Stuur de ingelezen data naar de koppelfunctie.
+overzicht_header, overzicht_data, fouten = koppel_autos_met_kosten(
+    autos_header,
+    autos_data,
+    kosten_header,
+    kosten_data
+)
+
+# Toon alles bij elkaar.
+toon_tabel(overzicht_header, overzicht_data)
+
+# Toon eventuele fouten.
+for fout in fouten:
+    print(fout)</code></pre>
+
+        <p>Output van het programma:</p>
+        <pre><code>kenteken   merk            kleur      type         postcode   plaats           bedrag
+----------------------------------------------------------------------------------------
+AB-123-C   Toyota          blauw      Yaris        1234 AB    Arnhem           250.00
+CD-456-E   Volkswagen      zwart      Golf         5678 CD    Nijmegen         125.50
+EF-789-G   Ford            wit        Focus        3456 EF    Utrecht            0.00</code></pre>
+
+        <h3 id="python-stap-voor-stap">Stap voor stap uitgelegd</h3>
+
+        <h4>1. CSV-bestand uitlezen</h4>
+        <p>De functie <code>lees_csv_bestand()</code> krijgt een bestandsnaam binnen. Daarna leest de functie het bestand uit en geeft twee lijsten terug: <code>header</code> en <code>data</code>.</p>
+        <pre><code>def lees_csv_bestand(bestandsnaam):
+    with open(bestandsnaam, newline="", encoding="utf-8") as bestand:
+        reader = csv.reader(bestand)
+
+        header = next(reader)
+        data = list(reader)
+
+    return header, data</code></pre>
+
+        <p>Na het uitlezen ziet de data er zo uit:</p>
+        <pre><code>autos_header = ["kenteken", "merk", "kleur", "type", "postcode", "plaats"]
+
+autos_data = [
+    ["AB-123-C", "Toyota", "blauw", "Yaris", "1234 AB", "Arnhem"],
+    ["CD-456-E", "Volkswagen", "zwart", "Golf", "5678 CD", "Nijmegen"],
+    ["EF-789-G", "Ford", "wit", "Focus", "3456 EF", "Utrecht"]
+]</code></pre>
+
+        <h4>2. Data uit een lijst halen</h4>
+        <p>Een rij is een lijst. Je haalt waarden uit een rij met een indexnummer. Python begint met tellen bij <code>0</code>.</p>
+        <pre><code>eerste_auto = autos_data[0]
+
+kenteken = eerste_auto[0]
+merk = eerste_auto[1]
+kleur = eerste_auto[2]
+type_auto = eerste_auto[3]
+
+print(kenteken)
+print(merk)</code></pre>
+
+        <h4>Data opslaan in een list [] en later ophalen</h4>
+        <p>Een list gebruik je om meerdere waarden of meerdere rijen bij elkaar te bewaren. Je maakt een lege list met <code>[]</code> en voegt data toe met <code>append()</code>.</p>
+        <pre><code># Maak een lege list.
+autos_lijst = []
+
+# Voeg losse auto's toe als lijst.
+autos_lijst.append(["AB-123-C", "Toyota", "blauw", "Yaris"])
+autos_lijst.append(["CD-456-E", "Volkswagen", "zwart", "Golf"])
+
+# Toon de hele list.
+print(autos_lijst)</code></pre>
+
+        <p>Data haal je weer op met indexnummers. De eerste index kiest de rij, de tweede index kiest de kolom in die rij.</p>
+        <pre><code># Pak de eerste auto uit de list.
+eerste_auto = autos_lijst[0]
+
+# Haal gegevens uit de eerste auto.
+kenteken = eerste_auto[0]
+merk = eerste_auto[1]
+kleur = eerste_auto[2]
+type_auto = eerste_auto[3]
+
+print(kenteken)
+print(merk)
+print(kleur)
+print(type_auto)</code></pre>
+
+        <p>Je kunt ook direct in één regel een waarde ophalen:</p>
+        <pre><code># Rij 0, kolom 1 betekent: eerste auto, merk.
+print(autos_lijst[0][1])  # Toyota
+
+# Rij 1, kolom 0 betekent: tweede auto, kenteken.
+print(autos_lijst[1][0])  # CD-456-E</code></pre>
+
+        <p>Met een <code>for</code>-loop kun je alle rijen uit de list uitlezen.</p>
+        <pre><code>for auto in autos_lijst:
+    kenteken = auto[0]
+    merk = auto[1]
+    kleur = auto[2]
+    type_auto = auto[3]
+
+    print(f"{kenteken} - {merk} - {kleur} - {type_auto}")</code></pre>
+
+        <h4>3. Data uitlezen via de header</h4>
+        <p>Het is beter om de positie van een kolom via de header op te zoeken. Dan werkt je code ook nog als de volgorde van kolommen later verandert.</p>
+        <pre><code>kenteken_index = autos_header.index("kenteken")
+merk_index = autos_header.index("merk")
+
+for auto in autos_data:
+    kenteken = auto[kenteken_index]
+    merk = auto[merk_index]
+
+    print(kenteken, merk)</code></pre>
+
+        <h4>4. Data valideren: kenteken, postcode en plaats</h4>
+        <p>Valideren betekent dat je controleert of data klopt voordat je ermee verder werkt. Zo voorkom je dat verkeerde kentekens, postcodes of plaatsnamen in je overzicht komen.</p>
+        <pre><code>import re
+
+def valideer_kenteken(kenteken):
+    # Voorbeeldformaat: AB-123-C
+    kenteken = kenteken.strip().upper()
+    patroon = r"[A-Z]{2}-[0-9]{3}-[A-Z]"
+
+    return re.fullmatch(patroon, kenteken) is not None
+
+def valideer_postcode(postcode):
+    # Voorbeeldformaat: 1234 AB of 1234AB
+    postcode = postcode.strip().upper()
+    patroon = r"[1-9][0-9]{3} ?[A-Z]{2}"
+
+    return re.fullmatch(patroon, postcode) is not None
+
+def valideer_plaats(plaats):
+    # Een plaats mag niet leeg zijn en moet vooral uit letters bestaan.
+    plaats = plaats.strip()
+    controle = plaats.replace(" ", "").replace("-", "").replace("'", "")
+
+    return len(plaats) &gt;= 2 and controle.isalpha()</code></pre>
+
+        <p>Voorbeeld van losse controles:</p>
+        <pre><code>print(valideer_kenteken("AB-123-C"))   # True
+print(valideer_kenteken("123-ABC"))    # False
+
+print(valideer_postcode("1234 AB"))    # True
+print(valideer_postcode("0123 AB"))    # False
+
+print(valideer_plaats("Arnhem"))       # True
+print(valideer_plaats("A1mere"))       # False</code></pre>
+
+        <p>Als je csv-bestand bijvoorbeeld ook <code>postcode</code> en <code>plaats</code> heeft, kun je een volledige rij controleren voordat je die gebruikt.</p>
+        <pre><code>def valideer_auto_rij(header, rij):
+    kenteken_index = header.index("kenteken")
+    postcode_index = header.index("postcode")
+    plaats_index = header.index("plaats")
+
+    kenteken = rij[kenteken_index]
+    postcode = rij[postcode_index]
+    plaats = rij[plaats_index]
+
+    if not valideer_kenteken(kenteken):
+        return False, "Ongeldig kenteken"
+
+    if not valideer_postcode(postcode):
+        return False, "Ongeldige postcode"
+
+    if not valideer_plaats(plaats):
+        return False, "Ongeldige plaats"
+
+    return True, "Rij is geldig"</code></pre>
+
+        <p>Zo kun je geldige en ongeldige rijen apart bewaren:</p>
+        <pre><code>geldige_autos = []
+fouten = []
+
+for rij in autos_data:
+    is_geldig, melding = valideer_auto_rij(autos_header, rij)
+
+    if is_geldig:
+        geldige_autos.append(rij)
+    else:
+        fouten.append([rij, melding])
+
+print(geldige_autos)
+print(fouten)</code></pre>
+
+        <div class="note">
+          <strong>Tip:</strong> valideer data voordat je gaat koppelen. Dan koppel je alleen betrouwbare rijen en kun je fouten apart tonen of opslaan.
+        </div>
+
+        <h4>5. Koppelen via kenteken</h4>
+        <p>Om twee csv-bestanden te koppelen, maak je van het eerste bestand een dictionary. Het kenteken wordt dan de sleutel. Daardoor kun je snel de juiste auto vinden bij een bedrag uit het tweede csv-bestand.</p>
+        <pre><code>autos_op_kenteken = {}
+
+for auto in autos_data:
+    kenteken = auto[kenteken_index].strip().upper()
+    autos_op_kenteken[kenteken] = auto</code></pre>
+
+        <p>Daarna loop je door <code>kosten_data</code> en zoek je per kenteken de juiste auto op.</p>
+        <pre><code>for kostenrij in kosten_data:
+    kenteken = kostenrij[kosten_kenteken_index].strip().upper()
+    bedrag = kostenrij[bedrag_index]
+
+    if kenteken in autos_op_kenteken:
+        auto = autos_op_kenteken[kenteken]
+        print(auto, bedrag)</code></pre>
+
+        <h4>6. Data naar functies sturen</h4>
+        <p>Een functie kan data ontvangen via parameters. In dit voorbeeld stuur je vier lijsten naar de functie: twee headers en twee datalijsten.</p>
+        <pre><code>overzicht_header, overzicht_data = koppel_autos_met_kosten(
+    autos_header,
+    autos_data,
+    kosten_header,
+    kosten_data
+)</code></pre>
+
+        <p>In de functie zelf komen deze waarden binnen als parameters:</p>
+        <pre><code>def koppel_autos_met_kosten(autos_header, autos_data, kosten_header, kosten_data):
+    # Hier kun je de ontvangen lijsten gebruiken.
+    print(autos_header)
+    print(autos_data)</code></pre>
+
+        <div class="note">
+          <strong>Belangrijk:</strong> een functie verandert niet automatisch je hele programma. Je stuurt data naar een functie met parameters en je krijgt data terug met <code>return</code>.
+        </div>
+
+        <h4>7. Header en data teruggeven</h4>
+        <p>De koppelfunctie geeft twee dingen terug: een nieuwe header en nieuwe gekoppelde data.</p>
+        <pre><code>return resultaat_header, resultaat_data</code></pre>
+
+        <p>Die vang je daarna zo op:</p>
+        <pre><code>overzicht_header, overzicht_data = koppel_autos_met_kosten(
+    autos_header,
+    autos_data,
+    kosten_header,
+    kosten_data
+)</code></pre>
+
+        <h4>8. Alles tonen in een tabel</h4>
+        <p>De functie <code>toon_tabel()</code> krijgt de header en data binnen en print eerst de header. Daarna print hij alle rijen.</p>
+        <pre><code>def toon_tabel(header, data):
+    print(f"{header[0]:&lt;10} {header[1]:&lt;15} {header[2]:&lt;10} {header[3]:&lt;12} {header[4]:&gt;10}")
+    print("-" * 62)
+
+    for rij in data:
+        print(f"{rij[0]:&lt;10} {rij[1]:&lt;15} {rij[2]:&lt;10} {rij[3]:&lt;12} {rij[4]:&gt;10}")</code></pre>
+
+        <h4>9. Gekoppelde data exporteren naar CSV</h4>
+        <p>Als je het overzicht wilt opslaan, schrijf je eerst de header naar het bestand en daarna alle datarijen.</p>
+        <pre><code>with open("auto_overzicht.csv", "w", newline="", encoding="utf-8") as bestand:
+    writer = csv.writer(bestand)
+
+    # Eerst de header.
+    writer.writerow(overzicht_header)
+
+    # Daarna alle gekoppelde data.
+    writer.writerows(overzicht_data)</code></pre>
       </div>
     </div>
 
